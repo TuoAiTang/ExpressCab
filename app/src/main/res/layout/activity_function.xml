@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:paddingTop="50dp"
+    android:paddingBottom="100dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
+
+    <LinearLayout android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80.0dip">
+
+        <ImageButton android:id="@+id/btn_choosefunc_output"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18.0dip"
+            android:src="@drawable/output" android:layout_weight="1.0" />
+
+        <ImageButton android:id="@+id/btn_choosefunc_input"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18.0dip"
+            android:src="@drawable/input"
+            android:layout_weight="1.0" />
+
+        </LinearLayout>
+
+    <LinearLayout android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80.0dip">
+
+        <ImageButton android:id="@+id/btn_choosefunc_delivery_record"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18.0dip"
+            android:src="@drawable/delivery_record" android:layout_weight="1.0" />
+
+        <ImageButton android:id="@+id/btn_choosefunc_cell_info"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18.0dip"
+            android:src="@drawable/cell_info"
+            android:layout_weight="1.0" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
