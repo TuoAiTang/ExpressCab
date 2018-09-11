@@ -59,17 +59,14 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "account:" + account);
                 Log.d(TAG, "password:" + password);
                 check_login(account, password);
+
                 if(login_info != null){
                     Toast.makeText(LoginActivity.this, "返回msg:" + login_info.getMsg(),
-                            Toast.LENGTH_SHORT).show();
-                }
-
-                if(true){
+                            Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "login_info_message" + login_info.getMsg());
                     Intent intent = new Intent(LoginActivity.this, FunctionActivity.class);
                     startActivity(intent);
                 }
-
-
             }
         });
 
@@ -93,14 +90,21 @@ public class LoginActivity extends AppCompatActivity {
         HttpUtil.sendOkHttpRequest(api_url, new okhttp3.Callback(){
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String responsData = response.body().toString();
+                String responsData = response.body().string();
+                Log.d(TAG, "onResponse: " + responsData);
                 BaseInfo login_info = new BaseInfo();
                 login_info = JsonParseUtil.parse(responsData, login_info);
+                Log.d(TAG, "onResponse: " + login_info.getMsg());
+                Log.d(TAG, "onResponse: " + login_info.getBody());
+                Log.d(TAG, "onResponse: " + login_info.getCode());
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "sendOkHttpRequestFailure!");
+                Log.d(TAG, "异常信息：\n" + e.getMessage());
+                Log.d(TAG, "e.toString" + e.toString());
+                e.printStackTrace();
                 login_info = null;
             }
         }, requestBody);
