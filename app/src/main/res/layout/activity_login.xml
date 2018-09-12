@@ -33,7 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="22sp"
-            android:hint="请输入您的手机号"/>
+            android:hint="请输入您的手机号"
+            android:text="@string/my_phone_number"/>
     </LinearLayout>
 
     <LinearLayout
@@ -55,7 +56,8 @@
             android:layout_weight="1"
             android:textSize="22sp"
             android:hint="请输入您的密码"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:text="@string/my_password"/>
     </LinearLayout>
 
     <Button

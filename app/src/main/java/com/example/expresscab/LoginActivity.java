@@ -1,7 +1,8 @@
 package com.example.expresscab;
 
 import android.content.Intent;
-import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,14 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.classforparse.BaseInfo;
+import com.example.classforparse.info.LoginInfo;
+import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
-import com.example.mytools.NetworkUtil;
+import com.example.mytools.CheckUtil;
 
 import java.io.IOException;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -32,41 +35,65 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText password_edit;
 
-    private BaseInfo login_info = null;
+    private LoginInfo login_info = null;
 
     private final  String TAG = "LoginActivity";
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            login_info = (LoginInfo) msg.obj;
+
+            if(login_info != null){
+                switch (login_info.getCode()){
+                    default:
+                        Toast.makeText(LoginActivity.this, login_info.getMsg(),
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    case 0:
+                        Toast.makeText(LoginActivity.this, "登陆成功！",
+                                Toast.LENGTH_SHORT).show();
+                        GlobalData.setUid(login_info.getBody().getId());
+                        GlobalData.setSid(login_info.getBody().getSession().getSid());
+                        Intent intent = new Intent(LoginActivity.this, FunctionActivity.class);
+                        startActivity(intent);
+                }
+            }
+        }
+    };
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        check_login_btn = findViewById(R.id.login_check_btn);
-        find_password_btn = findViewById(R.id.find_password_btn);
-        account_edit = findViewById(R.id.account_edit_text);
-        password_edit = findViewById(R.id.password_edit_text);
-
+        initView();
         check_login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //没有网络
-                if(!NetworkUtil.isNetworkAvailable(LoginActivity.this)){
-                    Toast.makeText(LoginActivity.this, "检查你的网络！", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 String account = account_edit.getText().toString();
                 String password = password_edit.getText().toString();
-                Log.d(TAG, "account:" + account);
-                Log.d(TAG, "password:" + password);
-                check_login(account, password);
-
-                if(login_info != null){
-                    Toast.makeText(LoginActivity.this, "返回msg:" + login_info.getMsg(),
-                            Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "login_info_message" + login_info.getMsg());
-                    Intent intent = new Intent(LoginActivity.this, FunctionActivity.class);
-                    startActivity(intent);
+                //检查网络，账号，密码
+                String check_network_msg = CheckUtil.checkNetwork(LoginActivity.this);
+                String check_account_msg = CheckUtil.checkAccount(account);
+                String check_password_msg = CheckUtil.checkPassword(password);
+                if(check_network_msg != CheckUtil.OK){
+                    Toast.makeText(LoginActivity.this, check_network_msg, Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if(check_account_msg != CheckUtil.OK){
+                    Toast.makeText(LoginActivity.this, check_account_msg
+                            , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(check_password_msg != CheckUtil.OK){
+                    Toast.makeText(LoginActivity.this, check_password_msg
+                            , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                check_login(account, password);
             }
         });
 
@@ -81,33 +108,39 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void initView(){
+
+        check_login_btn = findViewById(R.id.login_check_btn);
+        find_password_btn = findViewById(R.id.find_password_btn);
+        account_edit = findViewById(R.id.account_edit_text);
+        password_edit = findViewById(R.id.password_edit_text);
+
+    }
+
     public void check_login(String account, String password){
+
         String api_url = "http://101.200.89.170:9000/capp/login/normal";
         RequestBody requestBody = new FormBody.Builder()
-                                    .add("phone", account)
-                                    .add("password", password)
-                                    .build();
-        HttpUtil.sendOkHttpRequest(api_url, new okhttp3.Callback(){
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responsData = response.body().string();
-                Log.d(TAG, "onResponse: " + responsData);
-                BaseInfo login_info = new BaseInfo();
-                login_info = JsonParseUtil.parse(responsData, login_info);
-                Log.d(TAG, "onResponse: " + login_info.getMsg());
-                Log.d(TAG, "onResponse: " + login_info.getBody());
-                Log.d(TAG, "onResponse: " + login_info.getCode());
-            }
-
+                .add("phone", account)
+                .add("password", password)
+                .build();
+        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "sendOkHttpRequestFailure!");
                 Log.d(TAG, "异常信息：\n" + e.getMessage());
-                Log.d(TAG, "e.toString" + e.toString());
-                e.printStackTrace();
-                login_info = null;
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                Log.d(TAG, "onResponse: " + responseData);
+                Log.d(TAG, "Type of LoginInfo" + LoginInfo.class);
+                login_info = JsonParseUtil.parseForLogin(responseData);
+                Message message = new Message();
+                message.obj = login_info;
+                handler.sendMessage(message);
             }
         }, requestBody);
     }
-
 }
+
+

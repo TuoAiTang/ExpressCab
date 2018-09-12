@@ -1,13 +1,14 @@
 package com.example.mytools;
 
-import com.example.classforparse.BaseInfo;
+import com.example.classforparse.info.LoginInfo;
 import com.google.gson.Gson;
 
 public class JsonParseUtil {
 
-    public static BaseInfo parse(String jsonstr, BaseInfo bi){
+    public static LoginInfo parseForLogin(String jsonstr){
         Gson gson = new Gson();
-        bi =  gson.fromJson(jsonstr, bi.getClass());
-        return bi;
+        LoginInfo loginInfo=  gson.fromJson(jsonstr, LoginInfo.class);
+        return loginInfo;
     }
+
 }
