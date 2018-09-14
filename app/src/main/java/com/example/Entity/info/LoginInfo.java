@@ -1,6 +1,6 @@
-package com.example.classforparse.info;
+package com.example.Entity.info;
 
-import com.example.classforparse.body.LoginBody;
+import com.example.Entity.body.LoginBody;
 
 public class LoginInfo extends BaseInfo {
 

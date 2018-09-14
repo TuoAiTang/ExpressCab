@@ -1,4 +1,4 @@
-package com.example.classforparse.body;
+package com.example.Entity.body;
 
 public class LoginBodySession{
 

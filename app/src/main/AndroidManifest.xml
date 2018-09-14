@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.expresscab">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +23,11 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".FindPasswordActivity" />
         <activity android:name=".FunctionActivity" />
+        <activity android:name=".InputCabCode" />
+        <activity android:name=".InputActivity" />
+        <activity android:name=".InputConfirmActivity" />
+        <activity android:name=".GetExpActivity" />
+        <activity android:name=".RetrieveActivity"></activity>
     </application>
 
 </manifest>

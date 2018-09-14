@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo"
+        android:paddingTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="30dp">
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="快件运单号："
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/tv_exp_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="12345678"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="30dp">
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="收件人手机号："
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/tv_exp_rectel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="13001990655"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="30dp">
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="柜体编号："
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/tv_cab_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="1500520"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="箱体编号："
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/tv_cell_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="21"
+            android:gravity="center_horizontal"
+            android:textSize="30sp"
+            android:textColor="@color/littel_orange"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="号"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        >
+
+        <Button
+            android:id="@+id/dismiss_delivery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="取消投递"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg_white"
+            android:textColor="@color/white"
+            />
+        <Button
+            android:id="@+id/complete_delivery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="完成投递"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg_red"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="包裹投递后请确保箱门完全关闭"
+        android:paddingTop="90dp"
+        android:paddingBottom="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/info_blue"
+        />
+
+</LinearLayout>

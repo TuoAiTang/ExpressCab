@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:paddingTop="50dp"
-    android:paddingBottom="100dp"
+    android:paddingBottom="80dp"
     android:paddingLeft="25dp"
     android:paddingRight="25dp">
 
@@ -71,7 +71,7 @@
         android:textColor="#FFFFFF"
         android:textSize="25sp" />
     <Button
-        android:textColor="#ff003399"
+        android:textColor="@color/info_blue"
         android:id="@+id/find_password_btn"
         android:background="@android:color/transparent"
         android:layout_width="wrap_content"

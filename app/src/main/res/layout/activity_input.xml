@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/title_cab_code"
+        android:textSize="19.0sp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@color/gray"
+        android:text="这里是柜体编号" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="40.0dip"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:textSize="19.0sp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:text="快件运单号：     " />
+        <EditText
+            android:textSize="16.0sp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/et_sendexp_expnum"
+            android:background="@null"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入运单号 " />
+    </LinearLayout>
+    <View android:background="#ffbfbfbf"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="40.0dip"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:textSize="19.0sp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:text="收件人手机号： " />
+        <EditText
+            android:textSize="16.0sp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/et_sendexp_rectel"
+            android:background="@null"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入收件人手机号"
+            android:maxLength="11"
+            android:digits="\ 0123456789"
+            android:inputType="phone" />
+    </LinearLayout>
+    <View android:background="#ffbfbfbf"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip" />
+    <TextView
+        android:textSize="14.0dip"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="40.0dip"
+        android:text="选择使用的箱体" />
+    <View android:background="#ffbfbfbf"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/rg_choose_cell"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12.0dip"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rb_celltype1"
+                android:layout_width="60dp"
+                android:layout_height="30.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_weight="1.0"
+                android:textColor="@color/white"
+                android:background="@drawable/radiobtn"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14.0sp" />
+
+            <RadioButton
+                android:id="@+id/rb_celltype2"
+                android:layout_width="60dp"
+                android:layout_height="30.0dip"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10.0dip"
+                android:textColor="@color/white"
+                android:layout_weight="1.0"
+                android:background="@drawable/radiobtn"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14.0sp" />
+
+            <RadioButton
+                android:id="@+id/rb_celltype3"
+                android:layout_width="60dp"
+                android:layout_height="30.0dip"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10.0dip"
+                android:layout_weight="1.0"
+                android:background="@drawable/radiobtn"
+                android:textColor="@color/white"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14.0sp" />
+
+            <RadioButton
+                android:id="@+id/rb_celltype4"
+                android:layout_width="60dp"
+                android:layout_height="30.0dip"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10.0dip"
+                android:layout_weight="1.0"
+                android:background="@drawable/radiobtn"
+                android:button="@null"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="14.0sp" />
+        </RadioGroup>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_celltype1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:text="剩余"/>
+
+            <TextView
+                android:id="@+id/tv_celltype2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_celltype3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_celltype4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/before_confirm_next"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_bg_red"
+        android:layout_marginTop="35dp"
+        android:textColor="#FFFFFF"
+        android:text="下一步" />
+
+</LinearLayout>

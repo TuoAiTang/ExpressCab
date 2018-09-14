@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/item_tv_type"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#FF9900"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:text="超小"
+                android:textSize="20sp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/item_cell_code"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/littel_orange"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:text="24"
+                android:textSize="30sp"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:background="@color/white"
+            >
+            <TextView
+                android:id="@+id/item_tv_exp_code"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="单号"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/item_tv_addr"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="北邮本部"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/item_tv_in_time"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="投递时间"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/one_key_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_one_key"
+        android:text="一键取件"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

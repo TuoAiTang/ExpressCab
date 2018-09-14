@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.classforparse.info.LoginInfo;
+import com.example.Entity.info.LoginInfo;
 import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
@@ -75,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String account = account_edit.getText().toString();
                 String password = password_edit.getText().toString();
+                Log.d(TAG, "account:" + account);
+                Log.d(TAG, "password:" + password);
                 //检查网络，账号，密码
                 String check_network_msg = CheckUtil.checkNetwork(LoginActivity.this);
                 String check_account_msg = CheckUtil.checkAccount(account);

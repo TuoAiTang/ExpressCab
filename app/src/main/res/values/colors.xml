@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#EEEEEE</color>
+    <color name="colorPrimaryDark">#FF7744</color>
     <color name="colorAccent">#0088A8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#BBBBBB</color>
+    <color name="littel_orange">#FF7744</color>
+    <color name="info_blue">#ff003399</color>
 </resources>

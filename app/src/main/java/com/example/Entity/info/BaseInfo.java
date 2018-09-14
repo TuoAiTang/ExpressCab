@@ -1,4 +1,4 @@
-package com.example.classforparse.info;
+package com.example.Entity.info;
 
 public class BaseInfo {
 

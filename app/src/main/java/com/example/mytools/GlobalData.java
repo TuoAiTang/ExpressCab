@@ -3,7 +3,7 @@ package com.example.mytools;
 public class GlobalData {
     private static String order_id;
     private static String sid;
-    private static int uid;
+    private static String uid;
 
     public static String getOrder_id() {
         return order_id;
@@ -21,11 +21,11 @@ public class GlobalData {
         GlobalData.sid = sid;
     }
 
-    public static int getUid() {
+    public static String getUid() {
         return uid;
     }
 
-    public static void setUid(int uid) {
+    public static void setUid(String uid) {
         GlobalData.uid = uid;
     }
 }
