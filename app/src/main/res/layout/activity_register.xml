@@ -65,7 +65,7 @@
             android:background="@drawable/btn_bg_red"
             android:text="获取验证码"
             android:textColor="#ffffffff"
-            android:textSize="16.0sp" />
+            android:textSize="10sp" />
 
     </LinearLayout>
 

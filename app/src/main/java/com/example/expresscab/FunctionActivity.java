@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.mytools.GlobalData;
+
 public class FunctionActivity extends AppCompatActivity {
 
     private ImageButton input;
 
     private ImageButton output;
+
+    private ImageButton delievery_record;
+
+    private ImageButton cell_info;
 
 
     @Override

@@ -9,6 +9,7 @@ import com.example.Entity.info.AllocateCellInfo;
 import com.example.Entity.info.CabinetInfo;
 import com.example.Entity.info.DeliveryConfirmInfo;
 import com.example.Entity.info.LoginInfo;
+import com.example.Entity.info.RegisterSendInfo;
 import com.example.Entity.info.RetrieveApplyInfo;
 import com.example.Entity.info.RetrieveCheckInfo;
 import com.google.gson.Gson;
@@ -90,6 +91,12 @@ public class JsonParseUtil {
         Gson gson = new Gson();
         RetrieveCheckInfo retrieveCheckInfo = gson.fromJson(str, RetrieveCheckInfo.class);
         return retrieveCheckInfo;
+    }
+
+    public static RegisterSendInfo parseForRegisterSend(String str){
+        Gson gson = new Gson();
+        RegisterSendInfo registerSendInfo = gson.fromJson(str, RegisterSendInfo.class);
+        return registerSendInfo;
     }
 
 }
