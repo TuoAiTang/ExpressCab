@@ -9,6 +9,8 @@ import com.example.Entity.info.AllocateCellInfo;
 import com.example.Entity.info.CabinetInfo;
 import com.example.Entity.info.DeliveryConfirmInfo;
 import com.example.Entity.info.LoginInfo;
+import com.example.Entity.info.RetrieveApplyInfo;
+import com.example.Entity.info.RetrieveCheckInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -76,6 +78,18 @@ public class JsonParseUtil {
             orderList = null;
         }
         return orderList;
+    }
+
+    public static RetrieveApplyInfo parseForRetriveApply(String jsonstr){
+        Gson gson = new Gson();
+        RetrieveApplyInfo retrieveApplyInfo = gson.fromJson(jsonstr, RetrieveApplyInfo.class);
+        return retrieveApplyInfo;
+    }
+
+    public static RetrieveCheckInfo parseForRetrieveChcheckInfo(String str){
+        Gson gson = new Gson();
+        RetrieveCheckInfo retrieveCheckInfo = gson.fromJson(str, RetrieveCheckInfo.class);
+        return retrieveCheckInfo;
     }
 
 }

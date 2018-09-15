@@ -69,6 +69,7 @@ public class GetExpActivity extends AppCompatActivity {
                 getExpItem.setIn_time(order.getIn_time());
                 getExpItem.setOrder_id(order.getId());
                 myExpList.add(getExpItem);
+                //为了展示recycler view效果，重复添加以填充
                 myExpList.add(getExpItem);
                 myExpList.add(getExpItem);
                 myExpList.add(getExpItem);
@@ -95,6 +96,13 @@ public class GetExpActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        invokeGetAllAPI(GlobalData.getUid(), "1", GlobalData.getSid());
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //再次回到该活动时刷新列表
         invokeGetAllAPI(GlobalData.getUid(), "1", GlobalData.getSid());
     }
 

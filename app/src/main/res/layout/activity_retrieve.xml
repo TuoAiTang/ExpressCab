@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".RetrieveActivity">
+    android:layout_width="match_parent"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/iv_if_retrieve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/tv_retrieve_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="50dp"/>
+
+    <Button
+        android:id="@+id/btn_retrieve_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我已取件"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/btn_bg_red"
+        android:textColor="@color/white"
+        android:visibility="gone"
+       />
+
+
+</LinearLayout>

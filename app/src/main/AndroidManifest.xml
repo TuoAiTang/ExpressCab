@@ -26,7 +26,8 @@
         <activity android:name=".InputCabCode" />
         <activity android:name=".InputActivity" />
         <activity android:name=".InputConfirmActivity" />
-        <activity android:name=".GetExpActivity" />
+        <activity android:name=".GetExpActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".RetrieveActivity"></activity>
     </application>
 

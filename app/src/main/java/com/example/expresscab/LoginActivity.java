@@ -16,6 +16,7 @@ import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
 import com.example.mytools.CheckUtil;
+import com.example.mytools.MyToastUtil;
 
 import java.io.IOException;
 
@@ -51,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         return;
                     case 0:
-                        Toast.makeText(LoginActivity.this, "登录成功",
-                                Toast.LENGTH_SHORT).show();
+                        MyToastUtil.getCustomToast(LoginActivity.this,"登录成功",
+                        Toast.LENGTH_SHORT, R.drawable.login_ok).show();
                         GlobalData.setUid(login_info.getBody().getId());
                         GlobalData.setSid(login_info.getBody().getSession().getSid());
                         Intent intent = new Intent(LoginActivity.this, FunctionActivity.class);
