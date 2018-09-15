@@ -52,6 +52,20 @@ public class CheckUtil {
         return msg;
     }
 
+    public static String checkVercode(String vercode){
+        String msg = OK;
+        if(vercode.equals("")) {
+            msg = "验证码不能为空";
+            return msg;
+        }
+        Pattern p = Pattern.compile("\\d{6}");
+        Matcher m = p.matcher(vercode);
+        if(!m.matches()){
+            msg = "验证码为6位数字";
+            return msg;
+        }
+        return msg;
+    }
     public static Boolean checkInput(Context context, int cell_type, String exp_code, String consignee_phone) {
         Boolean flag = true;
         String msg = "检查输入";

@@ -9,6 +9,7 @@ import com.example.Entity.info.AllocateCellInfo;
 import com.example.Entity.info.CabinetInfo;
 import com.example.Entity.info.DeliveryConfirmInfo;
 import com.example.Entity.info.LoginInfo;
+import com.example.Entity.info.RegisterCheckInfo;
 import com.example.Entity.info.RegisterSendInfo;
 import com.example.Entity.info.RetrieveApplyInfo;
 import com.example.Entity.info.RetrieveCheckInfo;
@@ -99,4 +100,9 @@ public class JsonParseUtil {
         return registerSendInfo;
     }
 
+    public static RegisterCheckInfo parseForRegisterCheck(String str){
+        Gson gson = new Gson();
+        RegisterCheckInfo info = gson.fromJson(str, RegisterCheckInfo.class);
+        return info;
+    }
 }
