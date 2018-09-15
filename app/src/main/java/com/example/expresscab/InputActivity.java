@@ -18,9 +18,11 @@ import android.widget.Toast;
 
 import com.example.Entity.AvailableCell;
 import com.example.Entity.info.AllocateCellInfo;
+import com.example.mytools.CheckUtil;
 import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
+import com.example.mytools.StrUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,13 +77,13 @@ public class InputActivity extends AppCompatActivity {
                 startActivity(intent);
             }else{
                 tv_celltype1.setText("剩余" + avail_cells.get(0).getIdle_count() + "个");
-                rb_celltype1.setText(codeToString(avail_cells.get(0).getType()));
+                rb_celltype1.setText(StrUtil.codeToString(avail_cells.get(0).getType()));
                 tv_celltype2.setText("剩余" + avail_cells.get(1).getIdle_count() + "个");
-                rb_celltype2.setText(codeToString(avail_cells.get(1).getType()));
+                rb_celltype2.setText(StrUtil.codeToString(avail_cells.get(1).getType()));
                 tv_celltype3.setText("剩余" + avail_cells.get(2).getIdle_count() + "个");
-                rb_celltype3.setText(codeToString(avail_cells.get(2).getType()));
+                rb_celltype3.setText(StrUtil.codeToString(avail_cells.get(2).getType()));
                 tv_celltype4.setText("剩余" + avail_cells.get(3).getIdle_count() + "个");
-                rb_celltype4.setText(codeToString(avail_cells.get(3).getType()));
+                rb_celltype4.setText(StrUtil.codeToString(avail_cells.get(3).getType()));
                 if(avail_cells.get(0).getIdle_count() == 0){
                     rb_celltype1.setClickable(false);
                 }
@@ -100,25 +102,25 @@ public class InputActivity extends AppCompatActivity {
                         initTextView();
                         switch (i){
                             case R.id.rb_celltype1:
-                                Toast.makeText(InputActivity.this, "你选择了" + codeToString(avail_cells.get(0).getType()),
+                                Toast.makeText(InputActivity.this, "你选择了" + StrUtil.codeToString(avail_cells.get(0).getType()),
                                         Toast.LENGTH_SHORT).show();
                                 init_cell_type = avail_cells.get(0).getType();
                                 setChange(tv_celltype1);
                                 break;
                             case R.id.rb_celltype2:
-                                Toast.makeText(InputActivity.this, "你选择了" + codeToString(avail_cells.get(1).getType()),
+                                Toast.makeText(InputActivity.this, "你选择了" + StrUtil.codeToString(avail_cells.get(1).getType()),
                                         Toast.LENGTH_SHORT).show();
                                 init_cell_type = avail_cells.get(1).getType();
                                 setChange(tv_celltype2);
                                 break;
                             case R.id.rb_celltype3:
-                                Toast.makeText(InputActivity.this, "你选择了" + codeToString(avail_cells.get(2).getType()),
+                                Toast.makeText(InputActivity.this, "你选择了" + StrUtil.codeToString(avail_cells.get(2).getType()),
                                         Toast.LENGTH_SHORT).show();
                                 init_cell_type = avail_cells.get(2).getType();
                                 setChange(tv_celltype3);
                                 break;
                             case R.id.rb_celltype4:
-                                Toast.makeText(InputActivity.this, "你选择了" + codeToString(avail_cells.get(3).getType()),
+                                Toast.makeText(InputActivity.this, "你选择了" + StrUtil.codeToString(avail_cells.get(3).getType()),
                                         Toast.LENGTH_SHORT).show();
                                 init_cell_type = avail_cells.get(3).getType();
                                 setChange(tv_celltype4);
@@ -172,13 +174,14 @@ public class InputActivity extends AppCompatActivity {
                 int cell_type = init_cell_type;
                 String exp_code = ed_sendexp_expnum.getText().toString();
                 String consignee_phone = ed_sendexp_rectel.getText().toString();
+                Log.d(TAG, "onClick: " + (exp_code == null));
+                Log.d(TAG, "onClick: " + (exp_code.equals("")));
+                Log.d(TAG, "onClick: exp_code_length" + exp_code.length());
+                Log.d(TAG, "onClick: " + consignee_phone);
                 Log.d(TAG, "onClick: cell_type:" + cell_type);
-                invokeAllocateCellAPI(uid, cabinet_code, cell_type, exp_code,consignee_phone);
-
-//                if(checkInput(InputActivity.this, cell_type, exp_code, consignee_phone))
-//                {
-//                    invokeAllocateCellAPI(uid, cabinet_code, 10904, exp_code,consignee_phone);
-//                }
+                if(CheckUtil.checkInput(InputActivity.this, cell_type, exp_code, consignee_phone)){
+                    invokeAllocateCellAPI(uid, cabinet_code, cell_type, exp_code,consignee_phone);
+                }
             }
         });
     }
@@ -265,46 +268,8 @@ public class InputActivity extends AppCompatActivity {
         next_step = findViewById(R.id.before_confirm_next);
         title_cab_code = findViewById(R.id.title_cab_code);
     }
-    String codeToString(int code){
-        switch (code)
-        {
-            default:
-                return "";
-            case 10901:
-                return "大号箱";
-            case 10902:
-                return "中号箱";
-            case 10903:
-                return "小号箱";
-            case 10904:
-                return "迷你箱";
-        }
-    }
-    Boolean checkInput(Context context, int cell_type, String exp_code, String consignee_phone) {
-        Boolean flag = true;
-        String msg = "检查输入";
-        if (exp_code == "") {
-            msg = "单号不能为空！";
-            flag = false;
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-            return flag;
-        } else {
-            if ((consignee_phone == "")) {
-                msg = "联系人手机号不能为空！";
-                flag = false;
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-                return flag;
-            } else {
-                if (cell_type == 0) {
-                    msg = "请选择箱体类型！";
-                    flag = false;
-                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-                    return flag;
-                }
-            }
-            return flag;
-        }
-    }
+
+
 
     void setChange(TextView textView){
         textView.setBackgroundColor(Color.parseColor("#FFFFFF"));

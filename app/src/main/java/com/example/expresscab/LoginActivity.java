@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         return;
                     case 0:
-                        Toast.makeText(LoginActivity.this, "登陆成功！",
+                        Toast.makeText(LoginActivity.this, "登录成功",
                                 Toast.LENGTH_SHORT).show();
                         GlobalData.setUid(login_info.getBody().getId());
                         GlobalData.setSid(login_info.getBody().getSession().getSid());
