@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.Entity.info.RegiResetCheckInfo;
 import com.example.Entity.info.SendInfo;
+import com.example.mytools.APIUtil;
 import com.example.mytools.CheckUtil;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
@@ -52,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
             registerSendInfo = (SendInfo)msg.obj;
             if(registerSendInfo.getCode() == 0){
                 Toast.makeText(RegisterActivity.this, "发送成功",Toast.LENGTH_SHORT).show();
+                //启动计时器，开始倒计时
                 RegisterActivity.this.time.start();
             }else{
                 Toast.makeText(RegisterActivity.this, registerSendInfo.getMsg(),Toast.LENGTH_SHORT).show();
@@ -79,12 +81,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         initView();
+
         send_vercode_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 account = account_ed.getText().toString();
                 if(CheckUtil.checkAccount(RegisterActivity .this, account)){
-                    invokeRegisterSendVercodeAPI();
+                    APIUtil.invokeRegisterSendVercodeAPI(send_pcode_handler,
+                            account);
                 }
             }
         });
@@ -97,7 +101,8 @@ public class RegisterActivity extends AppCompatActivity {
                 password = password_ed.getText().toString();
                 if(CheckUtil.checkRegisterInput(RegisterActivity.this, account,
                         ver_code, password)){
-                    invokeRegisterCheckAPI();
+                    APIUtil.invokeRegisterCheckAPI(register_check_handler,
+                            account, ver_code,password);
                 }
             }
         });
@@ -112,52 +117,4 @@ public class RegisterActivity extends AppCompatActivity {
         time = new TimeCount(60000L, 1000L, this.send_vercode_btn);
     }
 
-    void invokeRegisterSendVercodeAPI(){
-        String api_url = "http://101.200.89.170:9000/capp/register/send_pcode";
-        RequestBody requestBody = new FormBody.Builder()
-                .add("phone", account)
-                .build();
-
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d(TAG, "onResponse: " + responseData);
-                registerSendInfo = JsonParseUtil.parseForSend(responseData);
-                Message message = new Message();
-                message.obj = registerSendInfo;
-                send_pcode_handler.sendMessage(message);
-            }
-        }, requestBody);
-    }
-
-    void invokeRegisterCheckAPI(){
-        String api_url = "http://101.200.89.170:9000/capp/register/phone";
-        RequestBody requestBody = new FormBody.Builder()
-                .add("phone", account)
-                .add("pcode", ver_code)
-                .add("password",password)
-                .build();
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d(TAG, "onResponse: " + responseData);
-                registerCheckInfo = JsonParseUtil.parseForRegiResetCheck(responseData);
-                Message message = new Message();
-                message.obj = registerCheckInfo;
-                register_check_handler.sendMessage(message);
-            }
-        }, requestBody);
-    }
 }

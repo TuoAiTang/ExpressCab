@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.Entity.info.LoginInfo;
+import com.example.mytools.APIUtil;
 import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
@@ -76,11 +77,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String account = account_edit.getText().toString();
                 String password = password_edit.getText().toString();
-                Log.d(TAG, "account:" + account);
-                Log.d(TAG, "password:" + password);
                 //检查网络，账号，密码
                 if(CheckUtil.checkLoginInput(LoginActivity.this, account, password))
-                    check_login(account, password);
+                    APIUtil.invokeLoginAPI(handler, account, password);
             }
         });
 
@@ -91,8 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     public void initView(){
@@ -104,30 +101,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void check_login(String account, String password){
-
-        String api_url = "http://101.200.89.170:9000/capp/login/normal";
-        RequestBody requestBody = new FormBody.Builder()
-                .add("phone", account)
-                .add("password", password)
-                .build();
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "异常信息：\n" + e.getMessage());
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d(TAG, "onResponse: " + responseData);
-                Log.d(TAG, "Type of LoginInfo" + LoginInfo.class);
-                login_info = JsonParseUtil.parseForLogin(responseData);
-                Message message = new Message();
-                message.obj = login_info;
-                handler.sendMessage(message);
-            }
-        }, requestBody);
-    }
 }
 
 

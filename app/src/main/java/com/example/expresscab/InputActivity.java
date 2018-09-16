@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.Entity.AvailableCell;
 import com.example.Entity.info.AllocateCellInfo;
+import com.example.mytools.APIUtil;
 import com.example.mytools.CheckUtil;
 import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
@@ -162,25 +163,23 @@ public class InputActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
+
         cab_code = getIntent().getExtras().getString("cab_code");
         initView();
-        Log.d(TAG, "cab_code:" + cab_code);
-        title_cab_code.setText(cab_code);
+
         next_step.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String uid = String.valueOf(GlobalData.getUid());
                 String cabinet_code = cab_code;
                 int cell_type = init_cell_type;
                 String exp_code = ed_sendexp_expnum.getText().toString();
                 String consignee_phone = ed_sendexp_rectel.getText().toString();
-                Log.d(TAG, "onClick: " + (exp_code == null));
-                Log.d(TAG, "onClick: " + (exp_code.equals("")));
-                Log.d(TAG, "onClick: exp_code_length" + exp_code.length());
-                Log.d(TAG, "onClick: " + consignee_phone);
-                Log.d(TAG, "onClick: cell_type:" + cell_type);
+
                 if(CheckUtil.checkDelieveryInput(InputActivity.this, cell_type, exp_code, consignee_phone)){
-                    invokeAllocateCellAPI(uid, cabinet_code, cell_type, exp_code,consignee_phone);
+                    APIUtil.invokeAllocateCellAPI(alloc_cell_handler, uid,
+                            cabinet_code, cell_type, exp_code,consignee_phone);
                 }
             }
         });
@@ -189,65 +188,12 @@ public class InputActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        cab_code = getIntent().getExtras().getString("cab_code");
-        invokeCabinetInfoAPI(cab_code);
+        APIUtil.invokeCabinetInfoAPI(cab_info_handler, cab_code);
     }
 
-    void invokeCabinetInfoAPI(String cab_code){
-        String api_url = "http://101.200.89.170:9002/capp/cabinet/info";
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("uid", String.valueOf(GlobalData.getUid()))
-                .add("cabinet_code", cab_code)
-                .build();
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d(TAG, "onResponse: data:" + responseData);
-                List<AvailableCell> availableCells = JsonParseUtil.parseForCabinet(responseData);
-                Message message = new Message();
-                message.obj = availableCells;
-                cab_info_handler.sendMessage(message);
-            }
-        }, requestBody);
-    }
 
-    void invokeAllocateCellAPI(String uid, String cabinet_code, int cell_type,
-                               String exp_code, String consignee_phone){
-        String api_url = "http://101.200.89.170:9002/capp/delivery/allocate_cell";
-
-        RequestBody requestBody = new FormBody.Builder()
-                .add("uid", uid)
-                .add("cabinet_code", cabinet_code)
-                .add("cell_type", String.valueOf(cell_type))
-                .add("exp_code", exp_code)
-                .add("consignee_phone", consignee_phone)
-                .build();
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d(TAG, "onResponse: data:" + responseData);
-                AllocateCellInfo allocateCellInfo = JsonParseUtil.parseForAllocateCell(responseData);
-                Message msg = new Message();
-                msg.obj = allocateCellInfo;
-                Log.d(TAG, "onResponse: msg:" + allocateCellInfo.getMsg());
-                alloc_cell_handler.sendMessage(msg);
-            }
-        }, requestBody);
-
-    }
 
     void initView(){
         ed_sendexp_expnum = findViewById(R.id.et_sendexp_expnum);
@@ -267,6 +213,8 @@ public class InputActivity extends AppCompatActivity {
 
         next_step = findViewById(R.id.before_confirm_next);
         title_cab_code = findViewById(R.id.title_cab_code);
+
+        title_cab_code.setText(cab_code);
     }
 
 

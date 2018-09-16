@@ -13,8 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Entity.info.LoginInfo;
+import com.example.Entity.info.RegiResetCheckInfo;
 import com.example.Entity.info.RetrieveApplyInfo;
 import com.example.Entity.info.RetrieveCheckInfo;
+import com.example.mytools.APIUtil;
+import com.example.mytools.ActivityUtil;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
 import com.example.mytools.MyToastUtil;
@@ -50,24 +53,17 @@ public class RetrieveActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             retrieveApplyInfo = (RetrieveApplyInfo)msg.obj;
             //测试方便，==0 --> ！=0
-            if(retrieveApplyInfo.getCode() == 0){
-                inflateSucView("开箱成功");
+            if(retrieveApplyInfo.getCode() != 0){
+                inflateSucView(retrieveApplyInfo.getMsg());
             }
             else{
                 inflateFailView(retrieveApplyInfo.getMsg());
-                Toast toast = MyToastUtil.getCustomToast(RetrieveActivity.this,
-                        "开箱失败！\n\n正在返回取件列表...",Toast.LENGTH_SHORT, R.drawable.fail);
-                toast.show();
-                Timer time = new Timer();
-                TimerTask tk = new TimerTask() {
-                    Intent intent = new Intent(RetrieveActivity.this, GetExpActivity.class);
-                    @Override
-                    public void run() {
-                        startActivity(intent);
-                        finish();
-                    }
-                };
-                time.schedule(tk, 1000);
+                MyToastUtil.getCustomToast(RetrieveActivity.this,
+                        "开箱失败！\n\n正在返回取件列表...",
+                        Toast.LENGTH_SHORT, R.drawable.fail).show();
+                ActivityUtil.delayJump(RetrieveActivity.this,
+                        GetExpActivity.class, 1000);
+
             }
         }
     };
@@ -77,19 +73,13 @@ public class RetrieveActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             retrieveCheckInfo = (RetrieveCheckInfo)msg.obj;
             if(retrieveCheckInfo.getCode() == 0){
-                Toast toast = MyToastUtil.getCustomToast(RetrieveActivity.this,
-                        "取件成功\n\n正在返回取件列表...",Toast.LENGTH_SHORT, R.drawable.success);
-                toast.show();
-                Timer time = new Timer();
-                TimerTask tk = new TimerTask() {
-                    Intent intent = new Intent(RetrieveActivity.this, GetExpActivity.class);
-                    @Override
-                    public void run() {
-                        startActivity(intent);
-                        finish();
-                    }
-                };
-                time.schedule(tk, 1000);
+                Log.d(TAG, "handleMessage: body:" + retrieveCheckInfo.getBody());
+                Log.d(TAG, "handleMessage: msg:" + retrieveCheckInfo.getMsg());
+                MyToastUtil.getCustomToast(RetrieveActivity.this,
+                        "取件成功\n\n正在返回取件列表...",Toast.LENGTH_SHORT,
+                        R.drawable.success).show();
+                ActivityUtil.delayJump(RetrieveActivity.this,
+                        GetExpActivity.class, 1000);
             }else{
                 Toast.makeText(RetrieveActivity.this, retrieveCheckInfo.getMsg(),
                         Toast.LENGTH_SHORT).show();
@@ -110,64 +100,18 @@ public class RetrieveActivity extends AppCompatActivity {
         order_id = bd.getString("order_id");
         Log.d(TAG, "onCreate: uid:" + uid);
         Log.d(TAG, "onCreate: order_id" + order_id);
-
+        //为隐藏的按钮设置点击事件
         btn_retrieve_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                invokeRetriveCheckAPI(uid, order_id);
+            APIUtil.invokeRetriveCheckAPI(check_handler, uid, order_id);
             }
         });
-
-        invokeRetriveApplyInfo(uid, order_id);
+        //创建时就调用接口发出开箱申请
+        APIUtil.invokeRetriveApplyInfo(apply_handler, uid, order_id);
     }
 
-    void invokeRetriveApplyInfo(String uid, String order_id){
 
-        String api_url = "http://101.200.89.170:9002/capp/retrieve/apply";
-        RequestBody requestBody = new FormBody.Builder()
-                .add("uid", uid)
-                .add("order_id", order_id)
-                .build();
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "异常信息：\n" + e.getMessage());
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d(TAG, "onResponse: " + responseData);
-                retrieveApplyInfo = JsonParseUtil.parseForRetriveApply(responseData);
-                Message message = new Message();
-                message.obj = retrieveApplyInfo;
-                apply_handler.sendMessage(message);
-            }
-        }, requestBody);
-    }
-    void invokeRetriveCheckAPI(String uid, String order_id){
-        String api_url = "http://101.200.89.170:9002/capp/retrieve/check";
-        final RequestBody requestBody = new FormBody.Builder()
-                .add("uid", uid)
-                .add("order_id", order_id)
-                .build();
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d(TAG, "onResponse: " + responseData);
-                RetrieveCheckInfo retrieveCheckInfo = JsonParseUtil
-                        .parseForRetrieveChcheckInfo(responseData);
-                Message msg = new Message();
-                msg.obj = retrieveCheckInfo;
-                check_handler.sendMessage(msg);
-            }
-        }, requestBody);
-    }
 
     void initView(){
         tv_retrieve_msg = findViewById(R.id.tv_retrieve_msg);

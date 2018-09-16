@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Entity.info.DeliveryConfirmInfo;
+import com.example.mytools.APIUtil;
 import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
@@ -27,16 +28,17 @@ import okhttp3.Response;
 
 public class InputConfirmActivity extends AppCompatActivity {
 
+    private String exp_code;
+    private String exp_rectel;
+    private String cab_code;
+    private String cell_code;
+    private String order_id;
+
     private TextView tv_exp_code;
-
     private TextView tv_exp_rectel;
-
     private TextView tv_cab_code;
-
     private TextView tv_cell_code;
-
     private Button dismiss_btn;
-
     private Button complete_btn;
 
     private DeliveryConfirmInfo deliveryConfirmInfo;
@@ -62,7 +64,6 @@ public class InputConfirmActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(InputConfirmActivity.this, deliveryConfirmInfo.getMsg(),
                         Toast.LENGTH_SHORT).show();
-
             }
         }
     };
@@ -71,20 +72,22 @@ public class InputConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_confirm);
-        initView();
 
+        //获取上一个活动传递的参数以初始化界面
         Bundle bd = getIntent().getExtras();
-        String exp_code = bd.getString("exp_code");
-        String exp_rectel = bd.getString("tel");
-        String cab_code = bd.getString("cab_code");
-        String cell_code = bd.getString("cell_code");
-        final String order_id = bd.getString("order_id");
-        setText(exp_code, exp_rectel, cab_code, cell_code);
+        exp_code   = bd.getString("exp_code");
+        exp_rectel = bd.getString("tel");
+        cab_code   = bd.getString("cab_code");
+        cell_code  = bd.getString("cell_code");
+        order_id = bd.getString("order_id");
+
+        //初始化
+        initView();
 
         complete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                invokeDeliveryConfirmAPI(GlobalData.getUid(), order_id);
+                APIUtil.invokeDeliveryConfirmAPI(handler, GlobalData.getUid(), order_id);
             }
         });
 
@@ -105,36 +108,10 @@ public class InputConfirmActivity extends AppCompatActivity {
         tv_cell_code = findViewById(R.id.tv_cell_code);
         dismiss_btn = findViewById(R.id.dismiss_delivery);
         complete_btn = findViewById(R.id.complete_delivery);
-    }
 
-    void setText(String exp_code, String exp_rectel, String cab_code, String cell_code){
         tv_exp_code.setText(exp_code);
         tv_exp_rectel.setText(exp_rectel);
         tv_cab_code.setText(cab_code);
         tv_cell_code.setText(cell_code);
-    }
-
-    void invokeDeliveryConfirmAPI(String uid, String order_id){
-        String api_url = "http://101.200.89.170:9002/capp/delivery/confirm";
-        RequestBody requestBody = new FormBody.Builder()
-                .add("uid", uid)
-                .add("order_id", order_id)
-                .build();
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                deliveryConfirmInfo = JsonParseUtil.parseForDeliveryConfirm(responseData);
-                Message msg = new Message();
-                msg.obj = deliveryConfirmInfo;
-                handler.sendMessage(msg);
-
-            }
-        }, requestBody);
     }
 }

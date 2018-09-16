@@ -15,6 +15,7 @@ import com.example.Entity.GetExpItem;
 import com.example.Entity.Order;
 import com.example.Entity.info.AddrInfo;
 import com.example.Entity.info.LoginInfo;
+import com.example.mytools.APIUtil;
 import com.example.mytools.GetExpAdapter;
 import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
@@ -36,18 +37,20 @@ public class GetExpActivity extends AppCompatActivity {
     private String TAG = "取件";
 
     private List<Order> orderList = new ArrayList<>();
-
-    private RecyclerView all_exp_rv;
-
-    private TextView my_exp_title;
-
     private List<GetExpItem> myExpList = new ArrayList<>();
 
-    private Handler olHandler = new Handler(){
+    private RecyclerView all_exp_rv;
+    private TextView my_exp_title;
+
+
+
+    private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
         orderList = (List<Order>) msg.obj;
+        //将传递回来的orderList转为myExpList以便Recyclerview显示
         if (orderList != null) {
+            //显示快件数量
             my_exp_title.setText("您共有" + orderList.size() + "件快递");
             Log.d(TAG, "handleMessage: count:" + orderList.size());
             for (Order order : orderList) {
@@ -79,6 +82,7 @@ public class GetExpActivity extends AppCompatActivity {
                 myExpList.add(getExpItem);
             }
         }
+        //传递数据给recyclerview展示
         LinearLayoutManager layoutManager = new LinearLayoutManager(GetExpActivity.this);
         all_exp_rv.setLayoutManager(layoutManager);
         GetExpAdapter adapter = new GetExpAdapter(myExpList);
@@ -96,39 +100,17 @@ public class GetExpActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        invokeGetAllAPI(GlobalData.getUid(), "1", GlobalData.getSid());
+        APIUtil.invokeGetAllAPI(handler, GlobalData.getUid(), "1", GlobalData.getSid());
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         //再次回到该活动时刷新列表
-        invokeGetAllAPI(GlobalData.getUid(), "1", GlobalData.getSid());
+        APIUtil.invokeGetAllAPI(handler, GlobalData.getUid(), "1", GlobalData.getSid());
     }
 
-    void invokeGetAllAPI(String uid, String status, String sid){
-        String api_url = "http://101.200.89.170:9002/sexp/order/all/list";
-        RequestBody requestBody = new FormBody.Builder()
-                .add("uid", uid)
-                .add("status", status)
-                .add("sid", sid)
-                .build();
-        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "异常信息：\n" + e.getMessage());
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                Log.d(TAG, "onResponse: " + responseData);
-                orderList = JsonParseUtil.parseForAllList(responseData);
-                Message message = new Message();
-                message.obj = orderList;
-                olHandler.sendMessage(message);
-            }
-        }, requestBody);
-    }
+
 
     void initView(){
         all_exp_rv = findViewById(R.id.all_exp_rv);
