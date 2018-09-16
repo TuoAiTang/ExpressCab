@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,8 @@ import com.example.mytools.CheckUtil;
 import com.example.mytools.TimeCount;
 
 public class FindPasswordActivity extends AppCompatActivity {
+
+    private String TAG = "找回密码";
 
     private String account;
     private String vercode;
@@ -51,8 +54,11 @@ public class FindPasswordActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             resetCheckInfo = (RegiResetCheckInfo)msg.obj;
+            Log.d(TAG, "handleMessage: " + resetCheckInfo.getMsg());
+            Log.d(TAG, "handleMessage: " + resetCheckInfo.toString());
+            Log.d(TAG, "handleMessage: " + resetCheckInfo.getCode());
             if(resetCheckInfo.getCode() == 0){
-                Toast.makeText(FindPasswordActivity.this, "注册成功,去登录吧！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(FindPasswordActivity.this, "重置成功,去登录吧！",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FindPasswordActivity.this, MainActivity.class);
                 startActivity(intent);
             }else{

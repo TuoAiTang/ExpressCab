@@ -143,6 +143,9 @@ public class InputActivity extends AppCompatActivity {
             if(allocateCellInfo.getCode() != 0){
                 Toast.makeText(InputActivity.this, allocateCellInfo.getMsg(),
                         Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "handleMessage: " + allocateCellInfo.getCode());
+                Log.d(TAG, "handleMessage: " + allocateCellInfo.getBody());
+                Log.d(TAG, "handleMessage: " + allocateCellInfo.getMsg());
                 return;
             }else{
                 Toast.makeText(InputActivity.this, "开箱成功！",
