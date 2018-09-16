@@ -79,24 +79,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "account:" + account);
                 Log.d(TAG, "password:" + password);
                 //检查网络，账号，密码
-                String check_network_msg = CheckUtil.checkNetwork(LoginActivity.this);
-                String check_account_msg = CheckUtil.checkAccount(account);
-                String check_password_msg = CheckUtil.checkPassword(password);
-                if(check_network_msg != CheckUtil.OK){
-                    Toast.makeText(LoginActivity.this, check_network_msg, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(check_account_msg != CheckUtil.OK){
-                    Toast.makeText(LoginActivity.this, check_account_msg
-                            , Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(check_password_msg != CheckUtil.OK){
-                    Toast.makeText(LoginActivity.this, check_password_msg
-                            , Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                check_login(account, password);
+                if(CheckUtil.checkLoginInput(LoginActivity.this, account, password))
+                    check_login(account, password);
             }
         });
 

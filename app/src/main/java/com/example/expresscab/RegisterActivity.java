@@ -11,9 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.Entity.info.LoginInfo;
-import com.example.Entity.info.RegisterCheckInfo;
-import com.example.Entity.info.RegisterSendInfo;
+import com.example.Entity.info.RegiResetCheckInfo;
+import com.example.Entity.info.SendInfo;
 import com.example.mytools.CheckUtil;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
@@ -29,8 +28,8 @@ import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private RegisterSendInfo registerSendInfo;
-    private RegisterCheckInfo registerCheckInfo;
+    private SendInfo registerSendInfo;
+    private RegiResetCheckInfo registerCheckInfo;
 
     private String account;
     private String ver_code;
@@ -50,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Handler send_pcode_handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            registerSendInfo = (RegisterSendInfo)msg.obj;
+            registerSendInfo = (SendInfo)msg.obj;
             if(registerSendInfo.getCode() == 0){
                 Toast.makeText(RegisterActivity.this, "发送成功",Toast.LENGTH_SHORT).show();
                 RegisterActivity.this.time.start();
@@ -63,9 +62,9 @@ public class RegisterActivity extends AppCompatActivity {
     private Handler register_check_handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            registerCheckInfo = (RegisterCheckInfo)msg.obj;
+            registerCheckInfo = (RegiResetCheckInfo)msg.obj;
             if(registerCheckInfo.getCode() == 0){
-                Toast.makeText(RegisterActivity.this, "注册成功\n\n去登录吧！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "注册成功,去登录吧！",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
             }else{
@@ -84,12 +83,8 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 account = account_ed.getText().toString();
-                String check_account_msg = CheckUtil.checkAccount(account);
-                if(check_account_msg == CheckUtil.OK){
+                if(CheckUtil.checkAccount(RegisterActivity .this, account)){
                     invokeRegisterSendVercodeAPI();
-                }else{
-                    Toast.makeText(RegisterActivity.this, check_account_msg
-                            , Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -98,27 +93,12 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 account = account_ed.getText().toString();
-                String check_account_msg = CheckUtil.checkAccount(account);
                 ver_code = ver_code_ed.getText().toString();
-                String check_ver_code_msg = CheckUtil.checkVercode(ver_code);
                 password = password_ed.getText().toString();
-                String check_password_msg = CheckUtil.checkPassword(password);
-                if(check_account_msg != CheckUtil.OK){
-                    Toast.makeText(RegisterActivity.this, check_account_msg
-                            , Toast.LENGTH_SHORT).show();
-                    return;
+                if(CheckUtil.checkRegisterInput(RegisterActivity.this, account,
+                        ver_code, password)){
+                    invokeRegisterCheckAPI();
                 }
-                if(check_ver_code_msg != CheckUtil.OK){
-                    Toast.makeText(RegisterActivity.this, check_ver_code_msg
-                            , Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(check_password_msg != CheckUtil.OK){
-                    Toast.makeText(RegisterActivity.this, check_password_msg
-                            , Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                invokeRegisterCheckAPI();
             }
         });
     }
@@ -148,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
                 Log.d(TAG, "onResponse: " + responseData);
-                registerSendInfo = JsonParseUtil.parseForRegisterSend(responseData);
+                registerSendInfo = JsonParseUtil.parseForSend(responseData);
                 Message message = new Message();
                 message.obj = registerSendInfo;
                 send_pcode_handler.sendMessage(message);
@@ -173,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
                 Log.d(TAG, "onResponse: " + responseData);
-                registerCheckInfo = JsonParseUtil.parseForRegisterCheck(responseData);
+                registerCheckInfo = JsonParseUtil.parseForRegiResetCheck(responseData);
                 Message message = new Message();
                 message.obj = registerCheckInfo;
                 register_check_handler.sendMessage(message);

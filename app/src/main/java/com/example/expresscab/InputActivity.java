@@ -179,7 +179,7 @@ public class InputActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: exp_code_length" + exp_code.length());
                 Log.d(TAG, "onClick: " + consignee_phone);
                 Log.d(TAG, "onClick: cell_type:" + cell_type);
-                if(CheckUtil.checkInput(InputActivity.this, cell_type, exp_code, consignee_phone)){
+                if(CheckUtil.checkDelieveryInput(InputActivity.this, cell_type, exp_code, consignee_phone)){
                     invokeAllocateCellAPI(uid, cabinet_code, cell_type, exp_code,consignee_phone);
                 }
             }

@@ -9,14 +9,13 @@ import com.example.Entity.info.AllocateCellInfo;
 import com.example.Entity.info.CabinetInfo;
 import com.example.Entity.info.DeliveryConfirmInfo;
 import com.example.Entity.info.LoginInfo;
-import com.example.Entity.info.RegisterCheckInfo;
-import com.example.Entity.info.RegisterSendInfo;
+import com.example.Entity.info.RegiResetCheckInfo;
+import com.example.Entity.info.SendInfo;
 import com.example.Entity.info.RetrieveApplyInfo;
 import com.example.Entity.info.RetrieveCheckInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,15 +93,15 @@ public class JsonParseUtil {
         return retrieveCheckInfo;
     }
 
-    public static RegisterSendInfo parseForRegisterSend(String str){
+    public static SendInfo parseForSend(String str){
         Gson gson = new Gson();
-        RegisterSendInfo registerSendInfo = gson.fromJson(str, RegisterSendInfo.class);
+        SendInfo registerSendInfo = gson.fromJson(str, SendInfo.class);
         return registerSendInfo;
     }
 
-    public static RegisterCheckInfo parseForRegisterCheck(String str){
+    public static RegiResetCheckInfo parseForRegiResetCheck(String str){
         Gson gson = new Gson();
-        RegisterCheckInfo info = gson.fromJson(str, RegisterCheckInfo.class);
+        RegiResetCheckInfo info = gson.fromJson(str, RegiResetCheckInfo.class);
         return info;
     }
 }
