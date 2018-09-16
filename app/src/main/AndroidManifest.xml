@@ -30,7 +30,8 @@
             android:name=".GetExpActivity"
             android:launchMode="singleTask" />
         <activity android:name=".RetrieveActivity" />
-        <activity android:name=".InputRecordActivity"></activity>
+        <activity android:name=".InputRecordActivity" />
+        <activity android:name=".AllCellActivity"></activity>
     </application>
 
 </manifest>
