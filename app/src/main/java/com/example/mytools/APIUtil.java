@@ -151,6 +151,29 @@ public class APIUtil {
             }
         }, requestBody);
     }
+    //返回重置验证码发送状态信息SendInfo
+    public static void invokeResetSendVercodeAPI(final Handler handler, String account){
+        String api_url = "http://101.200.89.170:9000/capp/password/send_pcode";
+        RequestBody requestBody = new FormBody.Builder()
+                .add("phone", account)
+                .build();
+
+        HttpUtil.sendOkHttpRequest(api_url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                SendInfo resetSendInfo = JsonParseUtil.parseForSend(responseData);
+                Message message = new Message();
+                message.obj = resetSendInfo;
+                handler.sendMessage(message);
+            }
+        }, requestBody);
+    }
 
     //返回注册状态信息registerCheckInfo交由register_check_handler处理
     public static void invokeRegisterCheckAPI(final Handler handler, String account,

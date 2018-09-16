@@ -53,7 +53,7 @@ public class RetrieveActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             retrieveApplyInfo = (RetrieveApplyInfo)msg.obj;
             //测试方便，==0 --> ！=0
-            if(retrieveApplyInfo.getCode() != 0){
+            if(retrieveApplyInfo.getCode() == 0){
                 inflateSucView(retrieveApplyInfo.getMsg());
             }
             else{
