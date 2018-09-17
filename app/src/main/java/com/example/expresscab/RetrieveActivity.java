@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.Entity.body.RetrieveCheckBody;
 import com.example.Entity.info.LoginInfo;
 import com.example.Entity.info.RegiResetCheckInfo;
 import com.example.Entity.info.RetrieveApplyInfo;
@@ -21,6 +22,8 @@ import com.example.mytools.ActivityUtil;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
 import com.example.mytools.MyToastUtil;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -53,6 +56,8 @@ public class RetrieveActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             retrieveApplyInfo = (RetrieveApplyInfo)msg.obj;
             //测试方便，==0 --> ！=0
+            Log.d(TAG, "handleMessage: " + retrieveApplyInfo.getCode() );
+            Log.d(TAG, "handleMessage: " + retrieveApplyInfo.getMsg());
             if(retrieveApplyInfo.getCode() == 0){
                 inflateSucView(retrieveApplyInfo.getMsg());
             }
@@ -62,7 +67,7 @@ public class RetrieveActivity extends AppCompatActivity {
                         "开箱失败！\n\n正在返回取件列表...",
                         Toast.LENGTH_SHORT, R.drawable.fail).show();
                 ActivityUtil.delayJump(RetrieveActivity.this,
-                        GetExpActivity.class, 1000);
+                        new GetExpActivity().getClass(), 1000);
 
             }
         }
@@ -72,17 +77,31 @@ public class RetrieveActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             retrieveCheckInfo = (RetrieveCheckInfo)msg.obj;
+            JsonElement je = retrieveCheckInfo.getBody();
+            Gson gson = new Gson();
+            RetrieveCheckBody retrieveCheckBody = gson.fromJson(je, RetrieveCheckBody.class);
+            Log.d(TAG, "handleMessage: body:" + retrieveCheckInfo.getBody());
+            Log.d(TAG, "handleMessage: msg:" + retrieveCheckInfo.getMsg());
             if(retrieveCheckInfo.getCode() == 0){
-                Log.d(TAG, "handleMessage: body:" + retrieveCheckInfo.getBody());
-                Log.d(TAG, "handleMessage: msg:" + retrieveCheckInfo.getMsg());
                 MyToastUtil.getCustomToast(RetrieveActivity.this,
                         "取件成功\n\n正在返回取件列表...",Toast.LENGTH_SHORT,
                         R.drawable.success).show();
+                Log.d(TAG, "handleMessage: " + retrieveCheckInfo.getBody());
                 ActivityUtil.delayJump(RetrieveActivity.this,
-                        GetExpActivity.class, 1000);
-            }else{
-                Toast.makeText(RetrieveActivity.this, retrieveCheckInfo.getMsg(),
-                        Toast.LENGTH_SHORT).show();
+                        new GetExpActivity().getClass(), 1000);
+            }
+//            if(retrieveCheckInfo.getCode() == 0){
+//                Log.d(TAG, "handleMessage: body:" + retrieveCheckInfo.getBody());
+//                Log.d(TAG, "handleMessage: msg:" + retrieveCheckInfo.getMsg());
+//                MyToastUtil.getCustomToast(RetrieveActivity.this,
+//                        "取件成功\n\n正在返回取件列表...",Toast.LENGTH_SHORT,
+//                        R.drawable.success).show();
+//                Log.d(TAG, "handleMessage: " + retrieveCheckInfo.getBody());
+//                ActivityUtil.delayJump(RetrieveActivity.this,
+//                        new GetExpActivity().getClass(), 1000);
+            else{
+                Toast.makeText(RetrieveActivity.this,
+                        String.valueOf(retrieveCheckBody.getIs_retrieve()), Toast.LENGTH_SHORT).show();
             }
         }
     };

@@ -195,9 +195,6 @@ public class InputActivity extends AppCompatActivity {
     }
 
 
-
-
-
     void initView(){
         ed_sendexp_expnum = findViewById(R.id.et_sendexp_expnum);
         ed_sendexp_rectel = findViewById(R.id.et_sendexp_rectel);

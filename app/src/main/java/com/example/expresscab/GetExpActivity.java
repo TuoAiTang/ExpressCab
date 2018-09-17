@@ -21,6 +21,7 @@ import com.example.mytools.GlobalData;
 import com.example.mytools.HttpUtil;
 import com.example.mytools.JsonParseUtil;
 import com.example.mytools.StrUtil;
+import com.yalantis.phoenix.PullToRefreshView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class GetExpActivity extends AppCompatActivity {
 
     private RecyclerView all_exp_rv;
     private TextView my_exp_title;
+    private PullToRefreshView mPullToRefreshView;
 
 
 
@@ -53,6 +55,9 @@ public class GetExpActivity extends AppCompatActivity {
             //显示快件数量
             my_exp_title.setText("您共有" + orderList.size() + "件快递");
             Log.d(TAG, "handleMessage: count:" + orderList.size());
+            //先清空
+            myExpList.removeAll(myExpList);
+            Log.d(TAG, "handleMessage: " + myExpList.size());
             for (Order order : orderList) {
                 Log.d(TAG, "handleMessage: id: " + order.getId());
                 Log.d(TAG, "handleMessage: in_time" + order.getIn_time());
@@ -73,13 +78,7 @@ public class GetExpActivity extends AppCompatActivity {
                 getExpItem.setOrder_id(order.getId());
                 myExpList.add(getExpItem);
                 //为了展示recycler view效果，重复添加以填充
-                myExpList.add(getExpItem);
-                myExpList.add(getExpItem);
-                myExpList.add(getExpItem);
-                myExpList.add(getExpItem);
-                myExpList.add(getExpItem);
-                myExpList.add(getExpItem);
-                myExpList.add(getExpItem);
+
             }
         }
         //传递数据给recyclerview展示
@@ -95,11 +94,32 @@ public class GetExpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_exp);
         initView();
+        mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pull_to_refresh);
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPullToRefreshView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullToRefreshView.setRefreshing(false);
+                    }
+                }, 1000);
+                //刷新
+                APIUtil.invokeGetAllAPI(handler, GlobalData.getUid(), "1", GlobalData.getSid());
+                Log.d(TAG, "onRefresh: COOOOL");
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        APIUtil.invokeGetAllAPI(handler, GlobalData.getUid(), "1", GlobalData.getSid());
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
         APIUtil.invokeGetAllAPI(handler, GlobalData.getUid(), "1", GlobalData.getSid());
     }
 

@@ -25,6 +25,8 @@ import okhttp3.Response;
 
 public class APIUtil {
 
+    private static String TAG = "APIUtil";
+
     //返回LoginInfo交由login_handler处理
     public static void invokeLoginAPI(final Handler handler, String account, String password){
 
@@ -95,6 +97,7 @@ public class APIUtil {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
+                Log.d(TAG, "onResponse: " + responseData);
                 AllocateCellInfo allocateCellInfo = JsonParseUtil.parseForAllocateCell(responseData);
                 Message msg = new Message();
                 msg.obj = allocateCellInfo;
@@ -119,11 +122,11 @@ public class APIUtil {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
+                Log.d(TAG, "onResponse: " + responseData);
                 DeliveryConfirmInfo deliveryConfirmInfo = JsonParseUtil.parseForDeliveryConfirm(responseData);
                 Message msg = new Message();
                 msg.obj = deliveryConfirmInfo;
                 handler.sendMessage(msg);
-
             }
         }, requestBody);
     }
@@ -227,8 +230,8 @@ public class APIUtil {
 
     //返回取件开箱状态信息RetrieveApplyInfo
     public static void invokeRetriveApplyInfo(final Handler handler, String uid, String order_id){
-
-        String api_url = "http://101.200.89.170:9002/capp/retrieve/apply";
+        Log.d(TAG, "invokeRetriveApplyInfo: 调用");
+        String api_url = "http://api.ec-logistics.cn/cabzoo/capp/retrieve/apply";
         RequestBody requestBody = new FormBody.Builder()
                 .add("uid", uid)
                 .add("order_id", order_id)
@@ -251,7 +254,7 @@ public class APIUtil {
 
     //返回取回检查信息RetrieveCheckInfo
     public static void invokeRetriveCheckAPI(final Handler handler, String uid, String order_id){
-        String api_url = "http://101.200.89.170:9002/capp/retrieve/check";
+        String api_url = "http://api.ec-logistics.cn/cabzoo/capp/retrieve/check";
         final RequestBody requestBody = new FormBody.Builder()
                 .add("uid", uid)
                 .add("order_id", order_id)

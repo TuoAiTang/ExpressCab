@@ -4,23 +4,31 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <TextView
-        android:id="@+id/my_exp_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal|top"
-        android:textSize="20sp"
-        android:background="@color/littel_orange"
-        android:textColor="@color/white"
-        android:text="我的快递"/>
+        <TextView
+               android:id="@+id/my_exp_title"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:background="@color/littel_orange"
+                android:textColor="@color/white"
+                android:text="我的快递"/>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/all_exp_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <com.yalantis.phoenix.PullToRefreshView
+            android:id="@+id/pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-    </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/all_exp_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+
+
+        </com.yalantis.phoenix.PullToRefreshView>
 
 </LinearLayout>
